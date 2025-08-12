@@ -1,0 +1,93 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/TruenoBd.otf",
+      "sha1": "755c22b7b2276ae1ac6c0ce4ceb07896b1695191"
+    },
+    {
+      "path": "src/assets/fonts/TruenoBdIt.otf",
+      "sha1": "15cdf7adb2e1233b33a170e69ab84b92f1ad2253"
+    },
+    {
+      "path": "src/assets/fonts/TruenoBdOl.otf",
+      "sha1": "0dcaa03baa396aeb6794d253033a77b523f0da4b"
+    },
+    {
+      "path": "src/assets/fonts/TruenoBdOlIt.otf",
+      "sha1": "2ca54dcd333d4df82e550645287111e5ae7286cd"
+    },
+    {
+      "path": "src/assets/fonts/TruenoBlk.otf",
+      "sha1": "31a667bae4edbe0502567d074447f282d39c4a37"
+    },
+    {
+      "path": "src/assets/fonts/TruenoBlkIt.otf",
+      "sha1": "e54293e3e522cd87a311eb3e00d2fa51db382d27"
+    },
+    {
+      "path": "src/assets/fonts/TruenoBlkOl.otf",
+      "sha1": "93cf2a4699a44782f54c0ac8b2e45916c172c493"
+    },
+    {
+      "path": "src/assets/fonts/TruenoBlkOlIt.otf",
+      "sha1": "ee41e6b73202ade4f3496b75c734b119bd791e19"
+    },
+    {
+      "path": "src/assets/fonts/TruenoExBd.otf",
+      "sha1": "b3902e1242a97963d4da221e1f12c3a2c52a9e05"
+    },
+    {
+      "path": "src/assets/fonts/TruenoExBdIt.otf",
+      "sha1": "fd970342b57099eeffdef8c3d90506e27b5f5d6e"
+    },
+    {
+      "path": "src/assets/fonts/TruenoExBdOl.otf",
+      "sha1": "914052687404b9e46c8ea69a7971539964931cae"
+    },
+    {
+      "path": "src/assets/fonts/TruenoExBdOlIt.otf",
+      "sha1": "1b7ae1a0cece6af08ce5ebc04095a3b44627ee31"
+    },
+    {
+      "path": "src/assets/fonts/TruenoLt.otf",
+      "sha1": "167ee2064ae740e91b3dc06bdf1b19109da4c82a"
+    },
+    {
+      "path": "src/assets/fonts/TruenoLtIt.otf",
+      "sha1": "cf70a77b0b21473a35dc00addd2bde2ad4845625"
+    },
+    {
+      "path": "src/assets/fonts/TruenoRg.otf",
+      "sha1": "946bc9fa7f9a4cfc72834b3f483d18bb2a30cbbb"
+    },
+    {
+      "path": "src/assets/fonts/TruenoRgIt.otf",
+      "sha1": "26f64c3186abf344488099d98b3db875c4b56dba"
+    },
+    {
+      "path": "src/assets/fonts/TruenoSBd.otf",
+      "sha1": "162c6696bbafdba218fbc41da8427bfe5c01a0b3"
+    },
+    {
+      "path": "src/assets/fonts/TruenoSBdIt.otf",
+      "sha1": "7d4b7a4f4e9bb7c6dc341558b345b205a0df28dc"
+    },
+    {
+      "path": "src/assets/fonts/TruenoUltBlk.otf",
+      "sha1": "507e83911268304de672d2c8a96fb3158a1d20ea"
+    },
+    {
+      "path": "src/assets/fonts/TruenoUltBlkIt.otf",
+      "sha1": "346536304ceb4f35bb0ce6a2a1c3eceecbf5dd9d"
+    },
+    {
+      "path": "src/assets/fonts/TruenoUltLt.otf",
+      "sha1": "2fa5cf9520890bcb96a40b642e14a2e9ec00f76b"
+    },
+    {
+      "path": "src/assets/fonts/TruenoUltLtIt.otf",
+      "sha1": "859e82763ee0a922585fd07bf5f26af7326e6229"
+    }
+  ]
+}
