@@ -82,7 +82,7 @@ const BusTicketCard: React.FC<Props> = ({
           <TextInput
             style={styles.textInput}
             placeholder="From"
-            placeholderTextColor="#999"
+            placeholderTextColor={Colors.redbusGray}
             value={fromLocation}
             onChangeText={onChangeFrom}
           />
@@ -101,7 +101,7 @@ const BusTicketCard: React.FC<Props> = ({
           <TextInput
             style={styles.textInput}
             placeholder="To"
-            placeholderTextColor="#999"
+            placeholderTextColor={Colors.redbusGray}
             value={toLocation}
             onChangeText={onChangeTo}
           />
@@ -225,7 +225,9 @@ const BusTicketCard: React.FC<Props> = ({
         variant="social"
         onPress={onSearch}
         title="Search Buses"
-        icon={<Icons.Search height={30} width={30} />}
+        icon={
+          <Icons.Search height={moderateScale(24)} width={moderateScale(24)} />
+        }
       />
     </View>
   );
@@ -249,7 +251,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.redbusBackground,
     borderRadius: moderateScale(12),
     borderWidth: 1,
-    borderColor: Colors.redbusBorder,
+    borderColor: Colors.redbusDisabled,
     overflow: 'hidden',
     marginBottom: moderateHeight(2),
     position: 'relative',
@@ -264,13 +266,13 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: moderateScale(16),
     fontFamily: Fonts.primary,
-    color: '#000',
+    color: Colors.redbusTextPrimary,
     marginLeft: moderateWidth(3),
     paddingVertical: 0,
   },
   divider: {
     height: 1,
-    backgroundColor: '#E5E5E5',
+    backgroundColor: Colors.redbusDisabled,
   },
   swapButton: {
     position: 'absolute',
@@ -302,14 +304,13 @@ const styles = StyleSheet.create({
   },
   dateLabel: {
     fontSize: moderateScale(12),
-    color: '#999',
+    color: Colors.redbusDisabled,
     fontFamily: Fonts.primary,
   },
   dateValue: {
     fontSize: moderateScale(16),
-    color: '#000',
+    color: Colors.redbusTextPrimary,
     fontFamily: Fonts.primary,
-    fontWeight: '600',
     marginTop: moderateHeight(0.2),
   },
   dateButtons: {
@@ -331,7 +332,6 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.bold,
   },
   activeDateButtonText: {
-    // color: Colors.redbusTextPrimary,
     color: Colors.white,
   },
   womenBookingContainer: {
