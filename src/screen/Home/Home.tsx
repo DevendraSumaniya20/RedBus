@@ -24,85 +24,115 @@ const Home: React.FC = () => {
   const [otpBooking, setOtpBooking] = useState(false);
   const [trainShowDatePicker, setTrainShowDatePicker] = useState(false);
 
-  // Handlers for Bus Search
+  // Hotel states
+  const [hotelLocation, setHotelLocation] = useState('');
+  const [checkInDate, setCheckInDate] = useState<Date>(new Date());
+  const [checkOutDate, setCheckOutDate] = useState<Date>(() => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return tomorrow;
+  });
+  const [showCheckInPicker, setShowCheckInPicker] = useState(false);
+  const [showCheckOutPicker, setShowCheckOutPicker] = useState(false);
+  const [hotelGuests, setHotelGuests] = useState({
+    rooms: 1,
+    adults: 2,
+    children: 0,
+  });
+
+  // Handlers
   const handleBusSearch = () => {
-    console.log('Searching buses...');
-    console.log('From:', busFromLocation);
-    console.log('To:', busToLocation);
-    console.log('Date:', busDate.toDateString());
-    console.log('Women Booking:', busWomenBooking);
+    console.log('Searching buses...', {
+      busFromLocation,
+      busToLocation,
+      busDate,
+      busWomenBooking,
+    });
   };
 
-  // Handlers for Train Search
   const handleTrainSearch = () => {
-    console.log('Searching trains...');
-    console.log('From:', trainFromLocation);
-    console.log('To:', trainToLocation);
-    console.log('Date:', trainDate.toDateString());
-    console.log('OTP Booking:', otpBooking);
+    console.log('Searching trains...', {
+      trainFromLocation,
+      trainToLocation,
+      trainDate,
+      otpBooking,
+    });
   };
 
-  // Swap locations for Bus
+  const handleHotelSearch = () => {
+    console.log('Searching hotels...', {
+      hotelLocation,
+      checkInDate,
+      checkOutDate,
+      hotelGuests,
+    });
+  };
+
   const handleSwapBusLocations = () => {
     setBusFromLocation(busToLocation);
     setBusToLocation(busFromLocation);
   };
 
-  // Swap locations for Train
   const handleSwapTrainLocations = () => {
     setTrainFromLocation(trainToLocation);
     setTrainToLocation(trainFromLocation);
   };
 
-  // Date handling for Bus
   const handleBusDateSelect = (date: Date) => {
     setBusDate(date);
     setBusShowDatePicker(false);
   };
 
-  // Date handling for Train
   const handleTrainDateSelect = (date: Date) => {
     setTrainDate(date);
     setTrainShowDatePicker(false);
   };
 
-  // Quick date select for Bus (today/tomorrow)
   const handleQuickDateSelectForBus = (type: 'today' | 'tomorrow') => {
     const newDate = new Date();
-    if (type === 'tomorrow') {
-      newDate.setDate(newDate.getDate() + 1);
-    }
+    if (type === 'tomorrow') newDate.setDate(newDate.getDate() + 1);
     setBusDate(newDate);
   };
 
-  // Quick date select for Train (tomorrow/day after)
   const handleQuickDateSelectForTrain = (type: 'tomorrow' | 'day after') => {
     const newDate = new Date();
-    if (type === 'tomorrow') {
-      newDate.setDate(newDate.getDate() + 1);
-    } else if (type === 'day after') {
-      newDate.setDate(newDate.getDate() + 2);
-    }
+    if (type === 'tomorrow') newDate.setDate(newDate.getDate() + 1);
+    if (type === 'day after') newDate.setDate(newDate.getDate() + 2);
     setTrainDate(newDate);
+  };
+
+  const handleCheckInDatePress = () => setShowCheckInPicker(true);
+  const handleCheckOutDatePress = () => setShowCheckOutPicker(true);
+
+  const handleCheckInDateSelect = (date: Date) => {
+    setCheckInDate(date);
+    setShowCheckInPicker(false);
+  };
+
+  const handleCheckOutDateSelect = (date: Date) => {
+    setCheckOutDate(date);
+    setShowCheckOutPicker(false);
+  };
+
+  const handleGuestsSelect = (guests: {
+    rooms: number;
+    adults: number;
+    children: number;
+  }) => {
+    setHotelGuests(guests);
   };
 
   const getDisplayDate = (date: Date) => {
     const today = new Date();
     const tomorrow = new Date();
     tomorrow.setDate(today.getDate() + 1);
-
-    if (date.toDateString() === today.toDateString()) {
-      return 'Today';
-    } else if (date.toDateString() === tomorrow.toDateString()) {
-      return 'Tomorrow';
-    } else {
-      return date.toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year:
-          date.getFullYear() !== today.getFullYear() ? 'numeric' : undefined,
-      });
-    }
+    if (date.toDateString() === today.toDateString()) return 'Today';
+    if (date.toDateString() === tomorrow.toDateString()) return 'Tomorrow';
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: date.getFullYear() !== today.getFullYear() ? 'numeric' : undefined,
+    });
   };
 
   return (
@@ -127,7 +157,6 @@ const Home: React.FC = () => {
           active={activeTab === 'bus'}
           onPress={() => setActiveTab('bus')}
         />
-
         <Components.TabButton
           label="Train Tickets"
           customIcon={
@@ -144,7 +173,6 @@ const Home: React.FC = () => {
           active={activeTab === 'train'}
           onPress={() => setActiveTab('train')}
         />
-
         <Components.TabButton
           label="Hotels"
           customIcon={
@@ -198,22 +226,46 @@ const Home: React.FC = () => {
         />
       )}
 
-      {activeTab === 'hotel' && <Components.HotelPromoCard />}
+      {activeTab === 'hotel' && (
+        <Components.HotelPromoCard
+          hotelLocation={hotelLocation}
+          checkInDate={getDisplayDate(checkInDate)}
+          checkOutDate={getDisplayDate(checkOutDate)}
+          checkInDateObject={checkInDate}
+          checkOutDateObject={checkOutDate}
+          guests={hotelGuests}
+          onLocationChange={setHotelLocation}
+          onCheckInDateSelect={handleCheckInDatePress}
+          onCheckOutDateSelect={handleCheckOutDatePress}
+          onGuestsSelect={handleGuestsSelect}
+          onSearch={handleHotelSearch}
+        />
+      )}
 
-      {/* Bus Date Picker */}
+      {/* Date Pickers */}
       <DatepickerModel
         visible={busShowDatePicker}
         onClose={() => setBusShowDatePicker(false)}
         onDateSelect={handleBusDateSelect}
         initialDate={busDate}
       />
-
-      {/* Train Date Picker */}
       <DatepickerModel
         visible={trainShowDatePicker}
         onClose={() => setTrainShowDatePicker(false)}
         onDateSelect={handleTrainDateSelect}
         initialDate={trainDate}
+      />
+      <DatepickerModel
+        visible={showCheckInPicker}
+        onClose={() => setShowCheckInPicker(false)}
+        onDateSelect={handleCheckInDateSelect}
+        initialDate={checkInDate}
+      />
+      <DatepickerModel
+        visible={showCheckOutPicker}
+        onClose={() => setShowCheckOutPicker(false)}
+        onDateSelect={handleCheckOutDateSelect}
+        initialDate={checkOutDate}
       />
     </SafeAreaView>
   );
@@ -222,10 +274,7 @@ const Home: React.FC = () => {
 export default Home;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.redbusBackground,
-  },
+  container: { flex: 1, backgroundColor: Colors.redbusBackground },
   tabContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
