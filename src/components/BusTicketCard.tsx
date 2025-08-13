@@ -15,7 +15,6 @@ import {
 import Colors from '../constants/color';
 import Fonts from '../constants/fontPath';
 import Icons from '../constants/svgPath';
-import Components from '.';
 
 import Animated, {
   useSharedValue,
@@ -23,15 +22,18 @@ import Animated, {
   withTiming,
   withSequence,
 } from 'react-native-reanimated';
+import Components from '.';
 
 interface Props {
   fromLocation: string;
   toLocation: string;
-  selectedDate: 'today' | 'tomorrow';
+  selectedDate: string;
+  selectedDateObject?: Date;
   womenBooking: boolean;
   onChangeFrom: (text: string) => void;
   onChangeTo: (text: string) => void;
-  onDateSelect: (date: 'today' | 'tomorrow') => void;
+  onDateSelect: () => void; // Opens custom date picker
+  onQuickDateSelect: (type: 'today' | 'tomorrow') => void; // Quick select today/tomorrow
   onWomenBookingToggle: (value: boolean) => void;
   onSearch: () => void;
   onSwap?: () => void;
@@ -41,10 +43,12 @@ const BusTicketCard: React.FC<Props> = ({
   fromLocation,
   toLocation,
   selectedDate,
+  selectedDateObject,
   womenBooking,
   onChangeFrom,
   onChangeTo,
   onDateSelect,
+  onQuickDateSelect,
   onWomenBookingToggle,
   onSearch,
   onSwap,
@@ -60,13 +64,28 @@ const BusTicketCard: React.FC<Props> = ({
   const handleSwap = () => {
     rotation.value = withSequence(
       withTiming(180, { duration: 250 }),
-      withTiming(0, { duration: 0 }), // reset instantly
+      withTiming(0, { duration: 0 }),
     );
 
     if (onSwap) {
       onSwap();
     }
   };
+
+  // Check if selected date is today or tomorrow
+  const isToday = () => {
+    if (!selectedDateObject) return false;
+    const today = new Date();
+    return selectedDateObject.toDateString() === today.toDateString();
+  };
+
+  const isTomorrow = () => {
+    if (!selectedDateObject) return false;
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return selectedDateObject.toDateString() === tomorrow.toDateString();
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.sectionTitle}>Bus Tickets</Text>
@@ -122,31 +141,37 @@ const BusTicketCard: React.FC<Props> = ({
             />
           </Animated.View>
         </TouchableOpacity>
+
         {/* Divider */}
         <View style={styles.divider} />
 
         {/* Date Selection */}
-        <View style={styles.dateRow}>
+        <TouchableOpacity style={styles.dateRow} onPress={onDateSelect}>
           <View style={styles.dateLeft}>
             <Icons.Calender height={20} width={20} fill={Colors.redbusGray} />
             <View style={styles.dateInfo}>
               <Text style={styles.dateLabel}>Date of Journey</Text>
-              <Text style={styles.dateValue}>Tue 12-Aug</Text>
+              <Text style={styles.dateValue}>
+                {selectedDateObject
+                  ? selectedDateObject.toLocaleDateString('en-US', {
+                      weekday: 'short',
+                      day: '2-digit',
+                      month: 'short',
+                    })
+                  : 'Select Date'}
+              </Text>
             </View>
           </View>
           <View style={styles.dateButtons}>
             <TouchableOpacity
-              style={[
-                styles.dateButton,
-                selectedDate === 'today' && styles.activeDateButton,
-              ]}
-              onPress={() => onDateSelect('today')}
+              style={[styles.dateButton, isToday() && styles.activeDateButton]}
+              onPress={() => onQuickDateSelect('today')}
               activeOpacity={0.7}
             >
               <Text
                 style={[
                   styles.dateButtonText,
-                  selectedDate === 'today' && styles.activeDateButtonText,
+                  isToday() && styles.activeDateButtonText,
                 ]}
               >
                 Today
@@ -155,22 +180,22 @@ const BusTicketCard: React.FC<Props> = ({
             <TouchableOpacity
               style={[
                 styles.dateButton,
-                selectedDate === 'tomorrow' && styles.activeDateButton,
+                isTomorrow() && styles.activeDateButton,
               ]}
-              onPress={() => onDateSelect('tomorrow')}
+              onPress={() => onQuickDateSelect('tomorrow')}
               activeOpacity={0.7}
             >
               <Text
                 style={[
                   styles.dateButtonText,
-                  selectedDate === 'tomorrow' && styles.activeDateButtonText,
+                  isTomorrow() && styles.activeDateButtonText,
                 ]}
               >
                 Tomorrow
               </Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
 
       {/* Women Booking */}
@@ -276,7 +301,7 @@ const styles = StyleSheet.create({
   },
   swapButton: {
     position: 'absolute',
-    top: '19%', // Adjust vertical placement
+    top: '19%',
     right: moderateWidth(3),
     backgroundColor: Colors.redbusSwitch,
     width: moderateWidth(12),

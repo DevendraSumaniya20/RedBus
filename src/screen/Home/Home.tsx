@@ -5,32 +5,65 @@ import Icons from '../../constants/svgPath';
 import { moderateScale } from '../../constants/responsive';
 import { ImagePath } from '../../constants/imagePath';
 import Colors from '../../constants/color';
+import DatepickerModel from '../../components/DatepickerModel';
 
 const Home: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'bus' | 'train' | 'hotel'>('bus');
-
   const [fromLocation, setFromLocation] = useState('');
   const [toLocation, setToLocation] = useState('');
-  const [selectedDate, setSelectedDate] = useState<'today' | 'tomorrow'>(
-    'today',
-  );
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [womenBooking, setWomenBooking] = useState(false);
 
   const handleBusSearch = () => {
     console.log('Searching buses...');
     console.log('From:', fromLocation);
     console.log('To:', toLocation);
-    console.log('Date:', selectedDate);
+    console.log('Date:', selectedDate.toDateString());
     console.log('Women Booking:', womenBooking);
-
-    // Add your search logic here
-    // Navigate to bus results screen or make API call
   };
 
   const handleSwapLocations = () => {
     const temp = fromLocation;
     setFromLocation(toLocation);
     setToLocation(temp);
+  };
+
+  const handleDateSelect = (date: Date) => {
+    setSelectedDate(date);
+    setShowDatePicker(false);
+  };
+
+  const handleDatePress = () => {
+    setShowDatePicker(true);
+  };
+
+  // ADD this new function
+  const handleQuickDateSelect = (type: 'today' | 'tomorrow') => {
+    const newDate = new Date();
+    if (type === 'tomorrow') {
+      newDate.setDate(newDate.getDate() + 1);
+    }
+    setSelectedDate(newDate);
+  };
+
+  const getDisplayDate = (date: Date) => {
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+
+    if (date.toDateString() === today.toDateString()) {
+      return 'Today';
+    } else if (date.toDateString() === tomorrow.toDateString()) {
+      return 'Tomorrow';
+    } else {
+      return date.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year:
+          date.getFullYear() !== today.getFullYear() ? 'numeric' : undefined,
+      });
+    }
   };
 
   return (
@@ -96,11 +129,13 @@ const Home: React.FC = () => {
         <Components.BusTicketCard
           fromLocation={fromLocation}
           toLocation={toLocation}
-          selectedDate={selectedDate}
+          selectedDate={getDisplayDate(selectedDate)}
+          selectedDateObject={selectedDate}
           womenBooking={womenBooking}
           onChangeFrom={setFromLocation}
           onChangeTo={setToLocation}
-          onDateSelect={setSelectedDate}
+          onDateSelect={handleDatePress}
+          onQuickDateSelect={handleQuickDateSelect}
           onWomenBookingToggle={setWomenBooking}
           onSearch={handleBusSearch}
           onSwap={handleSwapLocations}
@@ -109,6 +144,14 @@ const Home: React.FC = () => {
 
       {activeTab === 'train' && <Components.TrainTicketCard />}
       {activeTab === 'hotel' && <Components.HotelPromoCard />}
+
+      {/* Custom Date Picker Modal */}
+      <DatepickerModel
+        visible={showDatePicker}
+        onClose={() => setShowDatePicker(false)}
+        onDateSelect={handleDateSelect}
+        initialDate={selectedDate}
+      />
     </SafeAreaView>
   );
 };
