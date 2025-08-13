@@ -15,6 +15,14 @@ import {
 import Colors from '../constants/color';
 import Fonts from '../constants/fontPath';
 import Icons from '../constants/svgPath';
+import Components from '.';
+
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  withSequence,
+} from 'react-native-reanimated';
 
 interface Props {
   fromLocation: string;
@@ -41,6 +49,24 @@ const BusTicketCard: React.FC<Props> = ({
   onSearch,
   onSwap,
 }) => {
+  const rotation = useSharedValue(0);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ rotate: `${rotation.value}deg` }],
+    };
+  });
+
+  const handleSwap = () => {
+    rotation.value = withSequence(
+      withTiming(180, { duration: 250 }),
+      withTiming(0, { duration: 0 }), // reset instantly
+    );
+
+    if (onSwap) {
+      onSwap();
+    }
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.sectionTitle}>Bus Tickets</Text>
@@ -48,7 +74,11 @@ const BusTicketCard: React.FC<Props> = ({
       <View style={styles.bookingCard}>
         {/* From Input */}
         <View style={styles.inputRow}>
-          <Icons.Bus height={18} width={18} fill="#666" />
+          <Icons.Bus
+            height={18}
+            width={18}
+            fill={fromLocation ? Colors.redbusPrimary : Colors.redbusGray}
+          />
           <TextInput
             style={styles.textInput}
             placeholder="From"
@@ -63,7 +93,11 @@ const BusTicketCard: React.FC<Props> = ({
 
         {/* To Input */}
         <View style={styles.inputRow}>
-          <Icons.Bus height={18} width={18} fill="#666" />
+          <Icons.Bus
+            height={18}
+            width={18}
+            fill={toLocation ? Colors.redbusPrimary : Colors.redbusGray}
+          />
           <TextInput
             style={styles.textInput}
             placeholder="To"
@@ -77,18 +111,24 @@ const BusTicketCard: React.FC<Props> = ({
         <TouchableOpacity
           style={styles.swapButton}
           activeOpacity={0.7}
-          onPress={onSwap}
+          onPress={handleSwap}
         >
-          <Icons.Switch height={16} width={16} fill="#FFF" />
+          <Animated.View style={animatedStyle}>
+            <Icons.Switch
+              height={16}
+              width={16}
+              fill={Colors.white}
+              stroke={Colors.white}
+            />
+          </Animated.View>
         </TouchableOpacity>
-
         {/* Divider */}
         <View style={styles.divider} />
 
         {/* Date Selection */}
         <View style={styles.dateRow}>
           <View style={styles.dateLeft}>
-            <Icons.Calender height={18} width={18} fill="#666" />
+            <Icons.Calender height={20} width={20} fill={Colors.redbusGray} />
             <View style={styles.dateInfo}>
               <Text style={styles.dateLabel}>Date of Journey</Text>
               <Text style={styles.dateValue}>Tue 12-Aug</Text>
@@ -137,7 +177,11 @@ const BusTicketCard: React.FC<Props> = ({
       <View style={styles.womenBookingContainer}>
         <View style={styles.womenBookingLeft}>
           <View style={styles.womenIconContainer}>
-            <Icons.WomenIcon height={20} width={20} fill="#FF6B6B" />
+            <Icons.WomenIcon
+              height={moderateScale(30)}
+              width={moderateScale(30)}
+              fill={Colors.redbusPrimary}
+            />
           </View>
           <View style={styles.womenBookingTextContainer}>
             <Text style={styles.womenBookingTitle}>Booking for women</Text>
@@ -168,14 +212,21 @@ const BusTicketCard: React.FC<Props> = ({
       </View>
 
       {/* Search Button */}
-      <TouchableOpacity
-        style={styles.searchButton}
+      <Components.ActionButton
+        buttonStyle={{
+          backgroundColor: Colors.redbusPrimary,
+          borderColor: Colors.redbusSurface,
+        }}
+        textStyle={{
+          fontSize: scale(14),
+          fontFamily: Fonts.bold,
+          color: Colors.white,
+        }}
+        variant="social"
         onPress={onSearch}
-        activeOpacity={0.8}
-      >
-        <Icons.Search height={20} width={20} fill={Colors.white} />
-        <Text style={styles.searchButtonText}>Search buses</Text>
-      </TouchableOpacity>
+        title="Search Buses"
+        icon={<Icons.Search height={30} width={30} />}
+      />
     </View>
   );
 };
@@ -195,10 +246,10 @@ const styles = StyleSheet.create({
     fontSize: scale(18),
   },
   bookingCard: {
-    backgroundColor: '#FFF',
+    backgroundColor: Colors.redbusBackground,
     borderRadius: moderateScale(12),
     borderWidth: 1,
-    borderColor: '#E5E5E5',
+    borderColor: Colors.redbusBorder,
     overflow: 'hidden',
     marginBottom: moderateHeight(2),
     position: 'relative',
@@ -223,12 +274,12 @@ const styles = StyleSheet.create({
   },
   swapButton: {
     position: 'absolute',
-    top: '25%', // Adjust vertical placement
+    top: '19%', // Adjust vertical placement
     right: moderateWidth(3),
-    backgroundColor: '#999',
-    width: moderateWidth(9),
-    height: moderateWidth(9),
-    borderRadius: moderateWidth(9) / 2,
+    backgroundColor: Colors.redbusSwitch,
+    width: moderateWidth(12),
+    height: moderateWidth(12),
+    borderRadius: moderateWidth(14) / 2,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 2,
@@ -269,19 +320,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: moderateWidth(4),
     paddingVertical: moderateHeight(0.8),
     borderRadius: moderateScale(16),
-    backgroundColor: '#F5F5F5',
+    backgroundColor: Colors.redbusAccent,
   },
   activeDateButton: {
-    backgroundColor: '#FFE5E5',
+    backgroundColor: Colors.redbusSecondary,
   },
   dateButtonText: {
     fontSize: moderateScale(12),
-    color: '#666',
-    fontFamily: Fonts.primary,
+    color: Colors.redbusTextPrimary,
+    fontFamily: Fonts.bold,
   },
   activeDateButtonText: {
-    color: '#FF4B4B',
-    fontWeight: '500',
+    // color: Colors.redbusTextPrimary,
+    color: Colors.white,
   },
   womenBookingContainer: {
     backgroundColor: Colors.white,
@@ -304,27 +355,23 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   womenIconContainer: {
-    width: moderateScale(32),
-    height: moderateScale(32),
-    borderRadius: moderateScale(16),
-    backgroundColor: '#FFE5E5',
     justifyContent: 'center',
     alignItems: 'center',
   },
   womenBookingTextContainer: {
-    marginLeft: moderateWidth(3),
+    marginLeft: moderateWidth(2),
   },
   womenBookingTitle: {
-    fontSize: moderateScale(16),
-    color: Colors.redbusDisabled,
+    fontSize: scale(16),
+    color: Colors.redbusTextPrimary,
     fontFamily: Fonts.primary,
-    fontWeight: '500',
   },
   womenBookingSubtitle: {
-    fontSize: moderateScale(12),
-    color: '#4A90E2',
+    fontSize: scale(12),
+    color: Colors.redbusKnowMore,
     marginTop: moderateHeight(0.2),
-    fontFamily: Fonts.primary,
+    fontFamily: Fonts.bold,
+    textDecorationLine: 'underline',
   },
   toggleContainer: {
     padding: moderateScale(2),
@@ -333,12 +380,12 @@ const styles = StyleSheet.create({
     width: moderateScale(44),
     height: moderateScale(24),
     borderRadius: moderateScale(12),
-    backgroundColor: '#E0E0E0',
+    backgroundColor: Colors.redbusBorder,
     justifyContent: 'center',
     paddingHorizontal: moderateScale(2),
   },
   toggleTrackActive: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: Colors.success,
   },
   toggleThumb: {
     width: moderateScale(20),
@@ -353,25 +400,5 @@ const styles = StyleSheet.create({
   },
   toggleThumbActive: {
     alignSelf: 'flex-end',
-  },
-  searchButton: {
-    backgroundColor: '#FF4B4B',
-    borderRadius: moderateScale(8),
-    paddingVertical: moderateHeight(2.2),
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 2,
-    shadowColor: Colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 3,
-  },
-  searchButtonText: {
-    color: Colors.white,
-    fontSize: moderateScale(16),
-    fontFamily: Fonts.primary,
-    fontWeight: '600',
-    marginLeft: moderateWidth(2),
   },
 });

@@ -8,6 +8,8 @@ import navigationStrings from '../constants/navigationString';
 import Icons from '../constants/svgPath';
 import screens from '../screen';
 import Colors from '../constants/color';
+import { moderateHeight, scale } from '../constants/responsive';
+import Fonts from '../constants/fontPath';
 
 type BottomTabParamList = {
   [navigationStrings.Home]: undefined;
@@ -52,6 +54,11 @@ const BottomTabNavigation: React.FC = () => {
           tabBarActiveTintColor: Colors.redbusPrimary,
           tabBarInactiveTintColor: Colors.redbusTextSecondary,
           headerShown: false,
+          tabBarLabelStyle: {
+            fontSize: scale(10),
+            fontFamily: Fonts.bold,
+            marginTop: moderateHeight(0.3),
+          },
         };
       }}
     >
@@ -64,6 +71,7 @@ const BottomTabNavigation: React.FC = () => {
       <Tab.Screen
         name={navigationStrings.Profile}
         component={screens.Profile}
+        options={{ tabBarLabel: 'My Account' }}
       />
     </Tab.Navigator>
   );

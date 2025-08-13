@@ -49,16 +49,19 @@ const Colors = {
   tabInactive: 'gray',
 
   // Redbus Theme Colors
-  redbusPrimary: '#D32F2F', // Redbus signature red
-  redbusSecondary: '#C62828', // Slightly darker red
-  redbusAccent: '#FFCDD2', // Light red for accents
+  redbusPrimary: '#D92833', // Redbus signature red
+  redbusSecondary: '#D13140', // Slightly darker red
+  redbusAccent: '#FED7D7', // Light red for accents
   redbusBackground: '#FFFFFF', // White background
   redbusSurface: '#F8F8F8', // Light gray surface
-  redbusTextPrimary: '#000000', // Near-black text
+  redbusTextPrimary: '#241F22', // Near-black text
   redbusTextSecondary: '#757575', // Muted gray text
-  redbusBorder: '#E0E0E0', // Light gray borders
+  redbusBorder: '#F2F0F1', // Light gray borders
   redbusDisabled: '#BDBDBD',
   redbusSkip: '#1E90FF', // Skip button blue
+  redbusGray: '#9E9E9E',
+  redbusSwitch: '#4A4A4A',
+  redbusKnowMore: '#231AA3',
 
   // Redbus Variant Colors
   redbusSuccess: '#4CAF50',
