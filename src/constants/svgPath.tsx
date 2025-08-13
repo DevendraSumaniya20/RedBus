@@ -20,7 +20,8 @@ import Train from '../assets/svg/train.svg';
 import Hotel from '../assets/svg/hotel.svg';
 import WomenIcon from '../assets/svg/girl.svg';
 import BoyIcon from '../assets/svg/boy.svg';
-
+import Train2 from '../assets/svg/train2.svg';
+import Shield from '../assets/svg/shield.svg';
 const Icons = {
   Home,
   Booking,
@@ -44,6 +45,8 @@ const Icons = {
   Hotel,
   WomenIcon,
   BoyIcon,
+  Train2,
+  Shield,
 };
 
 export default Icons;

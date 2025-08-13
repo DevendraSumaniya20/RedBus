@@ -9,42 +9,81 @@ import DatepickerModel from '../../components/DatepickerModel';
 
 const Home: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'bus' | 'train' | 'hotel'>('bus');
-  const [fromLocation, setFromLocation] = useState('');
-  const [toLocation, setToLocation] = useState('');
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [womenBooking, setWomenBooking] = useState(false);
 
+  // Bus states
+  const [busFromLocation, setBusFromLocation] = useState('');
+  const [busToLocation, setBusToLocation] = useState('');
+  const [busDate, setBusDate] = useState<Date>(new Date());
+  const [busWomenBooking, setBusWomenBooking] = useState(false);
+  const [busShowDatePicker, setBusShowDatePicker] = useState(false);
+
+  // Train states
+  const [trainFromLocation, setTrainFromLocation] = useState('');
+  const [trainToLocation, setTrainToLocation] = useState('');
+  const [trainDate, setTrainDate] = useState<Date>(new Date());
+  const [otpBooking, setOtpBooking] = useState(false);
+  const [trainShowDatePicker, setTrainShowDatePicker] = useState(false);
+
+  // Handlers for Bus Search
   const handleBusSearch = () => {
     console.log('Searching buses...');
-    console.log('From:', fromLocation);
-    console.log('To:', toLocation);
-    console.log('Date:', selectedDate.toDateString());
-    console.log('Women Booking:', womenBooking);
+    console.log('From:', busFromLocation);
+    console.log('To:', busToLocation);
+    console.log('Date:', busDate.toDateString());
+    console.log('Women Booking:', busWomenBooking);
   };
 
-  const handleSwapLocations = () => {
-    const temp = fromLocation;
-    setFromLocation(toLocation);
-    setToLocation(temp);
+  // Handlers for Train Search
+  const handleTrainSearch = () => {
+    console.log('Searching trains...');
+    console.log('From:', trainFromLocation);
+    console.log('To:', trainToLocation);
+    console.log('Date:', trainDate.toDateString());
+    console.log('OTP Booking:', otpBooking);
   };
 
-  const handleDateSelect = (date: Date) => {
-    setSelectedDate(date);
-    setShowDatePicker(false);
+  // Swap locations for Bus
+  const handleSwapBusLocations = () => {
+    setBusFromLocation(busToLocation);
+    setBusToLocation(busFromLocation);
   };
 
-  const handleDatePress = () => {
-    setShowDatePicker(true);
+  // Swap locations for Train
+  const handleSwapTrainLocations = () => {
+    setTrainFromLocation(trainToLocation);
+    setTrainToLocation(trainFromLocation);
   };
 
-  // ADD this new function
-  const handleQuickDateSelect = (type: 'today' | 'tomorrow') => {
+  // Date handling for Bus
+  const handleBusDateSelect = (date: Date) => {
+    setBusDate(date);
+    setBusShowDatePicker(false);
+  };
+
+  // Date handling for Train
+  const handleTrainDateSelect = (date: Date) => {
+    setTrainDate(date);
+    setTrainShowDatePicker(false);
+  };
+
+  // Quick date select for Bus (today/tomorrow)
+  const handleQuickDateSelectForBus = (type: 'today' | 'tomorrow') => {
     const newDate = new Date();
     if (type === 'tomorrow') {
       newDate.setDate(newDate.getDate() + 1);
     }
-    setSelectedDate(newDate);
+    setBusDate(newDate);
+  };
+
+  // Quick date select for Train (tomorrow/day after)
+  const handleQuickDateSelectForTrain = (type: 'tomorrow' | 'day after') => {
+    const newDate = new Date();
+    if (type === 'tomorrow') {
+      newDate.setDate(newDate.getDate() + 1);
+    } else if (type === 'day after') {
+      newDate.setDate(newDate.getDate() + 2);
+    }
+    setTrainDate(newDate);
   };
 
   const getDisplayDate = (date: Date) => {
@@ -127,30 +166,54 @@ const Home: React.FC = () => {
       {/* Content Switcher */}
       {activeTab === 'bus' && (
         <Components.BusTicketCard
-          fromLocation={fromLocation}
-          toLocation={toLocation}
-          selectedDate={getDisplayDate(selectedDate)}
-          selectedDateObject={selectedDate}
-          womenBooking={womenBooking}
-          onChangeFrom={setFromLocation}
-          onChangeTo={setToLocation}
-          onDateSelect={handleDatePress}
-          onQuickDateSelect={handleQuickDateSelect}
-          onWomenBookingToggle={setWomenBooking}
+          fromLocation={busFromLocation}
+          toLocation={busToLocation}
+          selectedDate={getDisplayDate(busDate)}
+          selectedDateObject={busDate}
+          womenBooking={busWomenBooking}
+          onChangeFrom={setBusFromLocation}
+          onChangeTo={setBusToLocation}
+          onDateSelect={() => setBusShowDatePicker(true)}
+          onQuickDateSelect={handleQuickDateSelectForBus}
+          onWomenBookingToggle={setBusWomenBooking}
           onSearch={handleBusSearch}
-          onSwap={handleSwapLocations}
+          onSwap={handleSwapBusLocations}
         />
       )}
 
-      {activeTab === 'train' && <Components.TrainTicketCard />}
+      {activeTab === 'train' && (
+        <Components.TrainTicketCard
+          fromLocation={trainFromLocation}
+          toLocation={trainToLocation}
+          selectedDate={getDisplayDate(trainDate)}
+          selectedDateObject={trainDate}
+          otpBooking={otpBooking}
+          onChangeFrom={setTrainFromLocation}
+          onChangeTo={setTrainToLocation}
+          onDateSelect={() => setTrainShowDatePicker(true)}
+          onQuickDateSelect={handleQuickDateSelectForTrain}
+          onotpBookingToggle={setOtpBooking}
+          onSearch={handleTrainSearch}
+          onSwap={handleSwapTrainLocations}
+        />
+      )}
+
       {activeTab === 'hotel' && <Components.HotelPromoCard />}
 
-      {/* Custom Date Picker Modal */}
+      {/* Bus Date Picker */}
       <DatepickerModel
-        visible={showDatePicker}
-        onClose={() => setShowDatePicker(false)}
-        onDateSelect={handleDateSelect}
-        initialDate={selectedDate}
+        visible={busShowDatePicker}
+        onClose={() => setBusShowDatePicker(false)}
+        onDateSelect={handleBusDateSelect}
+        initialDate={busDate}
+      />
+
+      {/* Train Date Picker */}
+      <DatepickerModel
+        visible={trainShowDatePicker}
+        onClose={() => setTrainShowDatePicker(false)}
+        onDateSelect={handleTrainDateSelect}
+        initialDate={trainDate}
       />
     </SafeAreaView>
   );

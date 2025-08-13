@@ -410,7 +410,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(2),
   },
   toggleTrackActive: {
-    backgroundColor: Colors.success,
+    backgroundColor: Colors.redbusPrimary,
   },
   toggleThumb: {
     width: moderateScale(20),
