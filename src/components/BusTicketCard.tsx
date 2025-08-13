@@ -146,10 +146,10 @@ const BusTicketCard: React.FC<Props> = ({
         <View style={styles.divider} />
 
         {/* Date Selection */}
-        <TouchableOpacity style={styles.dateRow} onPress={onDateSelect}>
+        <View style={styles.dateRow}>
           <View style={styles.dateLeft}>
             <Icons.Calender height={20} width={20} fill={Colors.redbusGray} />
-            <View style={styles.dateInfo}>
+            <TouchableOpacity onPress={onDateSelect} style={styles.dateInfo}>
               <Text style={styles.dateLabel}>Date of Journey</Text>
               <Text style={styles.dateValue}>
                 {selectedDateObject
@@ -160,7 +160,7 @@ const BusTicketCard: React.FC<Props> = ({
                     })
                   : 'Select Date'}
               </Text>
-            </View>
+            </TouchableOpacity>
           </View>
           <View style={styles.dateButtons}>
             <TouchableOpacity
@@ -195,7 +195,7 @@ const BusTicketCard: React.FC<Props> = ({
               </Text>
             </TouchableOpacity>
           </View>
-        </TouchableOpacity>
+        </View>
       </View>
 
       {/* Women Booking */}
