@@ -31,7 +31,11 @@ interface Props {
   onLocationChange: (text: string) => void;
   onCheckInDateSelect: () => void;
   onCheckOutDateSelect: () => void;
-  onGuestsSelect: () => void; // ✅ updated type
+  onGuestsSelect: (guests: {
+    rooms: number;
+    adults: number;
+    children: number;
+  }) => void;
   onSearch: () => void;
 }
 
@@ -125,7 +129,10 @@ const HotelPromoCard: React.FC<Props> = ({
         <View style={styles.divider} />
 
         {/* Guests Selection */}
-        <TouchableOpacity onPress={onGuestsSelect} style={styles.inputRow}>
+        <TouchableOpacity
+          onPress={() => onGuestsSelect(guests)}
+          style={styles.inputRow}
+        >
           <Icons.GoogleLogo height={18} width={18} fill={Colors.redbusGray} />
           <View style={styles.guestsInfo}>
             <Text style={styles.guestsLabel}>No. of rooms & guests</Text>

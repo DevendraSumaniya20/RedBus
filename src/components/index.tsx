@@ -14,6 +14,8 @@ import HotelPromoCard from './HotelPromoCard';
 import TabButton from './TabButton';
 import TrainTicketCard from './TrainTicketCard';
 import DatepickerModel from './DatepickerModel';
+import OfferCard from './OfferCard';
+
 const Components = {
   CountryPickerCard,
   CountryListScreen,
@@ -31,6 +33,7 @@ const Components = {
   TabButton,
   TrainTicketCard,
   DatepickerModel,
+  OfferCard,
 };
 
 export default Components;
