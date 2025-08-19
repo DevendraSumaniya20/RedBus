@@ -225,3 +225,5 @@ const Login: React.FC<Props> = ({ navigation, route }) => {
 };
 
 export default Login;
+
+// npx react-native run-android --deviceId=10BD8A1KC700069

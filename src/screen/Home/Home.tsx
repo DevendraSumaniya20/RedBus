@@ -173,7 +173,7 @@ const Home: React.FC = () => {
   const [activeOfferIndex, setActiveOfferIndex] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<CategoryType>('All');
 
-  const flashListRef = useRef<FlashList<any>>(null);
+  const flashListRef = useRef<FlashList<any> | null>(null);
 
   const {
     busData,
@@ -482,12 +482,6 @@ const Home: React.FC = () => {
             snapToAlignment="start" // Snap to start of each card
             decelerationRate="fast" // Quick snapping
             pagingEnabled={false} // Disable default paging for custom snap behavior
-            getItemLayout={(data: any, index: number) => ({
-              length: CARD_WIDTH + CARD_MARGIN * 2,
-              offset: (CARD_WIDTH + CARD_MARGIN * 2) * index,
-              index,
-            })}
-            estimatedItemSize={CARD_WIDTH + CARD_MARGIN * 2}
           />
           {renderDots()}
         </>

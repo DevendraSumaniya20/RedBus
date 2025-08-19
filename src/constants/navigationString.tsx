@@ -11,6 +11,7 @@ const navigationStrings = {
   LanguageSelection: 'LanguageSelection',
   Splash: 'Splash',
   OTP: 'OTP',
+  FaceRecognition: 'FaceRecognition',
 } as const;
 
 export default navigationStrings;

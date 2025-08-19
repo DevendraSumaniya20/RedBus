@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['auth', 'language'], // only persist auth slice
+  whitelist: ['auth', 'language', 'face'], // only persist auth slice
 };
 
 // Wrap rootReducer with persistReducer

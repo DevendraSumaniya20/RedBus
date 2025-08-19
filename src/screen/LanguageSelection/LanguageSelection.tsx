@@ -133,10 +133,11 @@ const LanguageSelection: React.FC<Props> = ({ navigation }) => {
             <Components.ActionButton
               title={t('GetStarted')}
               onPress={() =>
-                navigation.navigate(navigationStrings.Login, {
-                  country: selectedCountry,
-                  language: selectedLanguage,
-                })
+                // navigation.navigate(navigationStrings.Login, {
+                //   country: selectedCountry,
+                //   language: selectedLanguage,
+                // })
+                navigation.navigate(navigationStrings.FaceRecognition)
               }
               disabled={false}
             />

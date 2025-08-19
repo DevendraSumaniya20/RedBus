@@ -1,3 +1,4 @@
+// AuthNavigation.tsx
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -5,6 +6,7 @@ import screens from '../screen';
 import navigationStrings from '../constants/navigationString';
 
 export type AuthStackParamList = {
+  [navigationStrings.FaceRecognition]: undefined;
   [navigationStrings.LanguageSelection]: undefined;
   [navigationStrings.Login]: {
     country: { flag: string; name: string };
@@ -28,11 +30,18 @@ const AuthNavigation: React.FC = () => {
       screenOptions={{
         headerShown: false,
       }}
+      initialRouteName={navigationStrings.FaceRecognition} // Start with Face Recognition
     >
+      <Stack.Screen
+        name={navigationStrings.FaceRecognition}
+        component={screens.FaceRecognition}
+      />
+
       <Stack.Screen
         name={navigationStrings.LanguageSelection}
         component={screens.LanguageSelection}
       />
+
       <Stack.Screen name={navigationStrings.Login} component={screens.Login} />
       <Stack.Screen
         name={navigationStrings.Register}

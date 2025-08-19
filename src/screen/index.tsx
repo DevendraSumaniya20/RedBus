@@ -11,6 +11,7 @@ import ForgotPassword from './ForgotPassword/ForgotPassword';
 import LanguageSelection from './LanguageSelection/LanguageSelection';
 import Splash from './Splash/Splash';
 import OTP from './OTP/OTP';
+import FaceRecognition from './FaceRecognition/FaceRecognition';
 
 export type ScreenList = {
   Home: React.ComponentType<any>;
@@ -24,6 +25,7 @@ export type ScreenList = {
   LanguageSelection: React.ComponentType<any>;
   Splash: React.ComponentType<any>;
   OTP: React.ComponentType<any>;
+  FaceRecognition: React.ComponentType<any>;
 };
 
 const screens: ScreenList = {
@@ -38,6 +40,7 @@ const screens: ScreenList = {
   LanguageSelection,
   Splash,
   OTP,
+  FaceRecognition,
 };
 
 export default screens;

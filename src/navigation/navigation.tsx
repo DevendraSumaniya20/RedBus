@@ -1,22 +1,22 @@
+// src/navigation/Navigation.tsx
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import BottomTabNavigation from './BottomTabNavigation';
 import AuthNavigation from './AuthNavigation';
 
 import { useAppSelector } from '../redux/hooks';
-import { isLoginSelector } from '../redux/slices/authSlice';
+import { faceSelector } from '../redux/slices/faceSlice';
+
 import screens from '../screen';
 
 const Navigation: React.FC = () => {
-  const isLoggedIn = useAppSelector(isLoginSelector);
+  const { isAuthenticated } = useAppSelector(faceSelector);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timeout);
+    // Simulate splash delay for smooth transition
+    const timer = setTimeout(() => setIsLoading(false), 1500);
+    return () => clearTimeout(timer);
   }, []);
 
   if (isLoading) {
@@ -25,7 +25,7 @@ const Navigation: React.FC = () => {
 
   return (
     <NavigationContainer>
-      {isLoggedIn ? <BottomTabNavigation /> : <AuthNavigation />}
+      {isAuthenticated ? <BottomTabNavigation /> : <AuthNavigation />}
     </NavigationContainer>
   );
 };
